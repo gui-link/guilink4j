@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.bitwormhole.guilink</groupId>
+    <artifactId>guilink-parent</artifactId>
+    <version>0.0.0-r0-dev-snapshot</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <guilink.version>0.0.0-r0-dev-snapshot</guilink.version>
+        <starter4j.version>0.1.3-r24-dev-snapshot</starter4j.version>
+		<starter4j.libs.slf4j.version>1.7.33</starter4j.libs.slf4j.version>
+		<starter4j.libs.junit.version>4.12</starter4j.libs.junit.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- guilink4j - modules -->
+
+            <dependency>
+                <groupId>com.bitwormhole.guilink</groupId>
+                <artifactId>guilink-awt</artifactId>
+                <version>${guilink.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.bitwormhole.guilink</groupId>
+                <artifactId>guilink-core</artifactId>
+                <version>${guilink.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.bitwormhole.guilink</groupId>
+                <artifactId>guilink-examples</artifactId>
+                <version>${guilink.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.bitwormhole.guilink</groupId>
+                <artifactId>guilink-swing</artifactId>
+                <version>${guilink.version}</version>
+            </dependency>
+
+            <!-- starter4j - deps -->
+
+            <dependency>
+                <groupId>com.bitwormhole.starter4j</groupId>
+                <artifactId>starter4j-starter</artifactId>
+                <version>${starter4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.bitwormhole.starter4j</groupId>
+                <artifactId>starter4j-swing</artifactId>
+                <version>${starter4j.version}</version>
+            </dependency>
+
+
+            <!-- junit -->
+
+            <dependency>
+                <artifactId>junit</artifactId>
+                <groupId>junit</groupId>
+                <version>${starter4j.libs.junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- slf4j -->
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${starter4j.libs.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-android</artifactId>
+                <version>${starter4j.libs.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${starter4j.libs.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${starter4j.libs.slf4j.version}</version>
+            </dependency>
+
+
+            <!-- other 3rd-party deps -->
+
+        </dependencies>
+
+    </dependencyManagement>
+
+</project>
