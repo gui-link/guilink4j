@@ -6,15 +6,18 @@ import com.bitwormhole.guilink.geometries.Point;
 import com.bitwormhole.guilink.geometries.Rect;
 import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.guilink4awt.ColorConvertors;
+import com.bitwormhole.guilink.guilink4awt.FontConvertors;
 
 public final class SwingGraphicsConvertor {
 
     public static java.awt.Font convert(com.bitwormhole.guilink.graphics.Font src) {
 
-        int style = java.awt.Font.PLAIN;
-        java.awt.Font dst;
-        dst = new java.awt.Font(src.getName(), style, (int) src.getSize());
-        return dst;
+        // int style = java.awt.Font.PLAIN;
+        // java.awt.Font dst;
+        // dst = new java.awt.Font(src.getName(), style, (int) src.getSize());
+        // return dst;
+
+        return FontConvertors.convert(src);
     }
 
     public static java.awt.Color convert(com.bitwormhole.guilink.graphics.Color src) {
@@ -52,7 +55,8 @@ public final class SwingGraphicsConvertor {
     public static java.awt.Stroke convert(com.bitwormhole.guilink.graphics.Stroke src) {
 
         // TODO ...
-        return new java.awt.BasicStroke(1);
+
+        return new java.awt.BasicStroke(src.width);
 
     }
 

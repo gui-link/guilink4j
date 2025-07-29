@@ -3,6 +3,7 @@ package com.bitwormhole.guilink.boxes;
 public class PaintSession {
 
     public final int depthLimit;
+    private BoxContext boxContext;
 
     public PaintSession() {
         final int limit = BoxingConst.MAX_DEPTH;
@@ -16,6 +17,14 @@ public class PaintSession {
             throw new RuntimeException("out of stack range");
         }
         return pc;
+    }
+
+    public BoxContext getBoxContext() {
+        return boxContext;
+    }
+
+    public void setBoxContext(BoxContext boxContext) {
+        this.boxContext = boxContext;
     }
 
     ////////////////////////////////////////////////////////////////////////////

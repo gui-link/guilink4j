@@ -3,6 +3,7 @@ package com.bitwormhole.guilink.boxes;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bitwormhole.guilink.events.MouseEvent;
 import com.bitwormhole.guilink.geometries.Point;
 import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.graphics.Graphics;
@@ -118,6 +119,7 @@ public class ContainerEntity extends Container {
         PaintSession session = pc1.session;
         PaintContext pc2 = session.getPaintContextAt(pc1.depth + 1);
         final Graphics g1 = pc1.graphics;
+        final BoxContext bc = session.getBoxContext();
 
         for (Box child : clist) {
             if (child == null) {
@@ -128,6 +130,7 @@ public class ContainerEntity extends Container {
             }
             Graphics g2 = prepareGraphicsForChild(g1, this, child);
             pc2.graphics = g2;
+            child.setContext(bc);
             child.paint(pc2);
         }
     }
@@ -145,6 +148,56 @@ public class ContainerEntity extends Container {
             g2.translate(at.x, at.y);
         }
         return g2;
+    }
+
+    @Override
+    protected void onMouseEvent(MouseEvent event) {
+        this.dispatchMouseEventToChildren(event);
+        if (innerIsEventClosed(event)) {
+            return;
+        }
+        super.onMouseEvent(event);
+    }
+
+    @Override
+    protected void dispatchMouseEventToChildren(MouseEvent me) {
+        List<Box> list = this.getChildrenForLayout();
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (innerIsEventClosed(me)) {
+                break;
+            }
+            Box child = list.get(i);
+            if (innerIsHitChild(me, child)) {
+                child.handleMouseEvent(me);
+            }
+        }
+    }
+
+    private static boolean innerIsEventClosed(MouseEvent me) {
+        if (me == null) {
+            return true;
+        }
+        return (me.isCancelled() || me.isHandled());
+    }
+
+    private static boolean innerIsHitChild(MouseEvent me, Box child) {
+        if (me == null || child == null) {
+            return false;
+        }
+
+        Point pt1 = me.getLocationAtCanvas();
+        Point pt2 = child.getLocationAtCanvas();
+        Size sz = child.getSize();
+
+        final float left, top, right, bottom, x, y;
+        x = pt1.x;
+        y = pt1.y;
+        top = pt2.y;
+        left = pt2.x;
+        right = pt2.x + sz.width;
+        bottom = pt2.y + sz.height;
+
+        return ((left < x) && (top < y) && (y < bottom) && (x < right));
     }
 
 }

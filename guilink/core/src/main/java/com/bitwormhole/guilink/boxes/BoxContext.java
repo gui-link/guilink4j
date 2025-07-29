@@ -2,15 +2,23 @@ package com.bitwormhole.guilink.boxes;
 
 import java.util.concurrent.Executor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bitwormhole.guilink.canvases.CanvasAdapter;
 
 public class BoxContext {
+
+    static final Logger logger = LoggerFactory.getLogger(BoxContext.class);
 
     private Executor uiExecutor;
     private Theme theme;
     private int layoutRevision;
     private int paintRevision;
     private CanvasAdapter adapter;
+
+    private Box currentHovering;
+    private Box currentDragging;
 
     public BoxContext() {
     }
@@ -61,6 +69,25 @@ public class BoxContext {
 
     public void setAdapter(CanvasAdapter adapter) {
         this.adapter = adapter;
+    }
+
+    public Box getCurrentHovering() {
+        return currentHovering;
+    }
+
+    public void setCurrentHovering(Box currentHovering) {
+
+        // logger.info(".setCurrentHovering(), box = " + currentHovering);
+
+        this.currentHovering = currentHovering;
+    }
+
+    public Box getCurrentDragging() {
+        return currentDragging;
+    }
+
+    public void setCurrentDragging(Box currentDragging) {
+        this.currentDragging = currentDragging;
     }
 
 }

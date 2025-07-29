@@ -2,7 +2,7 @@ package com.bitwormhole.guilink.guilink4swing;
 
 import java.lang.reflect.InvocationTargetException;
 
-import com.bitwormhole.guilink.guilink4swing.frames.TestingFrame1;
+import com.bitwormhole.guilink.guilink4swing.frames.HomeFrame;
 import com.bitwormhole.starter4j.swing.SwingApplicationConfig;
 import com.bitwormhole.starter4j.swing.SwingApplicationStarter;
 
@@ -21,7 +21,7 @@ public final class Main {
         SwingApplicationConfig cfg = new SwingApplicationConfig();
         cfg.setArguments(args);
         cfg.setModule(TestingModuleForGuilinkSwing.module());
-        cfg.setMainFrameClass(TestingFrame1.class);
+        cfg.setMainFrameClass(HomeFrame.class);
         SwingApplicationStarter.run(cfg);
     }
 

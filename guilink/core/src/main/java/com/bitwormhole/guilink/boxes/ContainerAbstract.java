@@ -2,6 +2,8 @@ package com.bitwormhole.guilink.boxes;
 
 import java.util.List;
 
+import com.bitwormhole.guilink.events.MouseEvent;
+
 public abstract class ContainerAbstract extends BoxEntity {
 
     ////////////////////////////////////////////////////////////////////////////
@@ -29,5 +31,7 @@ public abstract class ContainerAbstract extends BoxEntity {
     protected abstract void onUpdateLayoutForChildren(LayoutContext lc);
 
     protected abstract List<Box> createChildrenListForLayout();
+
+    protected abstract void dispatchMouseEventToChildren(MouseEvent me);
 
 }

@@ -58,4 +58,24 @@ public class Font {
         return instance;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public void setItalic(boolean italic) {
+        this.italic = italic;
+    }
+
 }

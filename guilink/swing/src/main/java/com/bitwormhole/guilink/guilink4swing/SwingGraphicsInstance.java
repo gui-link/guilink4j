@@ -1,6 +1,7 @@
 package com.bitwormhole.guilink.guilink4swing;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 
@@ -95,7 +96,16 @@ public class SwingGraphicsInstance implements com.bitwormhole.guilink.graphics.G
     public void drawText(String text, float x, float y) {
 
         this.logAuto("drawText");
+
         // this.checker.checkColor().checkFont();
+
+        this.mG2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        // this.mG2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        // RenderingHints.VALUE_ANTIALIAS_ON);
+
+        this.mG2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
 
         this.mG2d.drawString(text, x, y);
     }
@@ -110,8 +120,8 @@ public class SwingGraphicsInstance implements com.bitwormhole.guilink.graphics.G
     }
 
     private void logAuto(String fn) {
-        String name = this.getClass().getSimpleName();
-        logger.info(name + "." + fn + "()");
+        // String name = this.getClass().getSimpleName();
+        // logger.info(name + "." + fn + "()");
     }
 
     // private class MyParamsChecker {
@@ -157,9 +167,11 @@ public class SwingGraphicsInstance implements com.bitwormhole.guilink.graphics.G
     // }
 
     @Override
-    public Size computeTextSize(String text) {
+    public Size computeTextSize(String text, Font font) {
 
         // this.checker.checkFont();
+
+        this.setFont(font);
 
         FontRenderContext frc = this.mFontRenderContext;
         if (frc == null) {

@@ -11,7 +11,7 @@
         <relativePath>./guilink/parent</relativePath>
     </parent>
 
-    <artifactId>guilink-all</artifactId>
+    <artifactId>guilink</artifactId>
     <packaging>pom</packaging>
 
     <modules>

@@ -18,9 +18,16 @@ public abstract class Box extends BoxAbstract {
     private Point locationAtCanvas;
 
     private Style style;
+    private StyleCache styleCache;
+    private StyleLoader styleLoader;
+    private StyleLoader mInnerStyleLoader; // 用于内部加载样式, 不公开给外部使用
 
+    private BoxStateEnum state;
     private boolean present; // 是否出现在渲染列表中
     private boolean clip; // 是否对绘图区域进行裁减
+    private boolean enabled;
+    private boolean selected; // 是否已被选中
+    private boolean acceptHovering; // 是否可以响应 mouse-hovering 事件
 
     private int z; // 显示顺序
     private int index; // dom 顺序
@@ -31,6 +38,7 @@ public abstract class Box extends BoxAbstract {
     public Box() {
         this.clip = true;
         this.present = true;
+        this.enabled = true;
     }
 
     public Size getSize() {
@@ -75,10 +83,91 @@ public abstract class Box extends BoxAbstract {
     public Style getStyle() {
         Style st = this.style;
         if (st == null) {
-            st = GuilinkGetters.notNull(st);
-            this.style = st;
+            st = this.getStyleWithInnerLoader();
         }
         return st;
+    }
+
+    private Style getStyleWithInnerLoader() {
+        StyleLoader loader = this.mInnerStyleLoader;
+        if (loader == null) {
+            loader = new MyInnerStyleLoader();
+            this.mInnerStyleLoader = loader;
+        }
+        return loader.load(null);
+    }
+
+    private class MyInnerStyleLoader implements StyleLoader {
+
+        @Override
+        public Style load(StyleSelector sel) {
+
+            final Box box1 = Box.this;
+            BoxStateEnum state1 = box1.getState();
+            StyleCache cache1 = box1.styleCache;
+            StyleLoader loader1 = box1.styleLoader;
+
+            state1 = this.prepareState(state1);
+            cache1 = this.prepareCache(cache1);
+            loader1 = this.prepareLoader(loader1);
+
+            if (loader1 == null) {
+                return null;
+            }
+
+            // load from cache
+            Style style1 = cache1.getStyle(state1);
+            if (style1 != null) {
+                return style1;
+            }
+
+            // load from source
+            if (sel == null) {
+                sel = new StyleSelector();
+            }
+            sel.setType(box1.getClass());
+            sel.setState(state1);
+            style1 = loader1.load(sel);
+
+            // put to cache
+            cache1.put(state1, style1);
+
+            style1 = GuilinkGetters.notNull(style1);
+            return style1;
+        }
+
+        private BoxStateEnum prepareState(BoxStateEnum state1) {
+            if (state1 != null) {
+                return state1;
+            }
+            return BoxStateEnum.NORMAL;
+        }
+
+        private StyleLoader prepareLoader(StyleLoader loader) {
+            if (loader != null) {
+                return loader;
+            }
+            final Box box1 = Box.this;
+            final BoxContext ctx = box1.context;
+            if (ctx == null) {
+                return null;
+            }
+            loader = ctx.getTheme();
+            if (loader == null) {
+                throw new RuntimeException("no theme");
+            }
+            box1.styleLoader = loader;
+            return loader;
+        }
+
+        private StyleCache prepareCache(StyleCache cache1) {
+            if (cache1 != null) {
+                return cache1;
+            }
+            cache1 = new StyleCache();
+            Box.this.styleCache = cache1;
+            return cache1;
+        }
     }
 
     public void setStyle(Style style) {
@@ -179,6 +268,65 @@ public abstract class Box extends BoxAbstract {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public StyleCache getStyleCache() {
+        StyleCache sc = this.styleCache;
+        if (sc == null) {
+            sc = new StyleCache();
+            this.styleCache = sc;
+        }
+        return sc;
+    }
+
+    public void setStyleCache(StyleCache styleCache) {
+        this.styleCache = styleCache;
+    }
+
+    public StyleLoader getStyleLoader() {
+        return styleLoader;
+    }
+
+    public void setStyleLoader(StyleLoader styleLoader) {
+        this.styleLoader = styleLoader;
+    }
+
+    public BoxStateEnum getState() {
+        BoxStateEnum st = this.state;
+        if (st == null) {
+            return this.computeCurrentState();
+        } else if (st.equals(BoxStateEnum.AUTO)) {
+            return this.computeCurrentState();
+        }
+        return state;
+    }
+
+    public void setState(BoxStateEnum state) {
+        this.state = state;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isAcceptHovering() {
+        return acceptHovering;
+    }
+
+    public void setAcceptHovering(boolean acceptHovering) {
+        this.acceptHovering = acceptHovering;
     }
 
 }

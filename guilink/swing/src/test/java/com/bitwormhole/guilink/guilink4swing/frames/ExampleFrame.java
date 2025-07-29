@@ -14,18 +14,18 @@ import com.bitwormhole.guilink.widgets.Space;
 import com.bitwormhole.starter4j.swing.FrameRegistration;
 import com.bitwormhole.starter4j.swing.Goal;
 
-public class TestingFrame1 extends JFrameWithLife {
+public class ExampleFrame extends JFrameWithLife {
 
     ////////////////////////////////////////////////////////////////////////////
     /// public
 
-    public static TestingFrame1 create(Goal goal) {
-        return new TestingFrame1(goal);
+    public static ExampleFrame create(Goal goal) {
+        return new ExampleFrame(goal);
     }
 
     public static FrameRegistration registration() {
         FrameRegistration r = new FrameRegistration();
-        r.setType(TestingFrame1.class);
+        r.setType(ExampleFrame.class);
         r.setFactory((g) -> create(g));
         return r;
     }
@@ -58,7 +58,7 @@ public class TestingFrame1 extends JFrameWithLife {
     ////////////////////////////////////////////////////////////////////////////
     /// private
 
-    private TestingFrame1(Goal goal) {
+    private ExampleFrame(Goal goal) {
     }
 
 }

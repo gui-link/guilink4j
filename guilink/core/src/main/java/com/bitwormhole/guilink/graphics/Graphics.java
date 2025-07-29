@@ -16,7 +16,7 @@ public interface Graphics {
 
     void drawText(String text, float x, float y);
 
-    Size computeTextSize(String text);
+    Size computeTextSize(String text, Font font);
 
     void translate(float x, float y);
 

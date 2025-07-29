@@ -1,41 +1,71 @@
 package com.bitwormhole.guilink.utils;
 
+import com.bitwormhole.guilink.boxes.AlignEnum;
 import com.bitwormhole.guilink.boxes.LineStyleEnum;
 import com.bitwormhole.guilink.boxes.Style;
 import com.bitwormhole.guilink.geometries.Point;
 import com.bitwormhole.guilink.geometries.Rect;
 import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.graphics.Color;
+import com.bitwormhole.guilink.graphics.Font;
 
 public final class GuilinkGetters {
 
     private GuilinkGetters() {
     }
 
+    public static Float notNull(Float o) {
+        if (o == null) {
+            return 0f;
+        }
+        return o;
+    }
+
     public static Point notNull(Point o) {
         if (o == null) {
-            return new Point();
+            return GuilinkDefaultValues.getPoint();
         }
         return o;
     }
 
     public static Rect notNull(Rect o) {
         if (o == null) {
-            return new Rect();
+            return GuilinkDefaultValues.getRect();
         }
         return o;
     }
 
     public static Size notNull(Size o) {
         if (o == null) {
-            return new Size();
+            return GuilinkDefaultValues.getSize();
         }
         return o;
     }
 
     public static Style notNull(Style o) {
         if (o == null) {
-            return new Style();
+            return GuilinkDefaultValues.getStyle();
+        }
+        return o;
+    }
+
+    public static Font notNull(Font o) {
+        if (o == null) {
+            return GuilinkDefaultValues.getFont();
+        }
+        return o;
+    }
+
+    public static Color notNull(Color o) {
+        if (o == null) {
+            return GuilinkDefaultValues.getColor();
+        }
+        return o;
+    }
+
+    public static AlignEnum notNull(AlignEnum o) {
+        if (o == null) {
+            return GuilinkDefaultValues.getAlignEnum();
         }
         return o;
     }

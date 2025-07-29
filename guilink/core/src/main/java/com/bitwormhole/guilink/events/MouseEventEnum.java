@@ -1,5 +1,9 @@
 package com.bitwormhole.guilink.events;
 
-public class MouseEventEnum {
+public enum MouseEventEnum {
+
+    NONE, PRESSED, RELEASED, CLICKED, HOVERED,
+
+    EXITED, ENTERED, WHEEL, DRAGGED
 
 }

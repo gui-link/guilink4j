@@ -3,7 +3,9 @@ package com.bitwormhole.guilink.guilink4swing.config.t;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bitwormhole.guilink.guilink4swing.frames.TestingFrame1;
+import com.bitwormhole.guilink.guilink4swing.frames.ExampleFrame;
+import com.bitwormhole.guilink.guilink4swing.frames.HomeFrame;
+
 import com.bitwormhole.starter4j.application.ComponentRegistryFunc;
 import com.bitwormhole.starter4j.application.ComponentTemplate;
 import com.bitwormhole.starter4j.application.ComponentTemplate.RegistrationT;
@@ -33,7 +35,10 @@ final class TestingFramesConfig implements FrameRegistry {
     @Override
     public List<FrameRegistration> listRegistrations(List<FrameRegistration> arg0) {
         List<FrameRegistration> list = new ArrayList<>();
-        list.add(TestingFrame1.registration());
+
+        list.add(ExampleFrame.registration());
+        list.add(HomeFrame.registration());
+
         return list;
     }
 

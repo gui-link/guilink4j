@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bitwormhole.guilink.events.KeyEvent;
 import com.bitwormhole.guilink.events.MouseEvent;
+import com.bitwormhole.guilink.events.MouseEventEnum;
 import com.bitwormhole.guilink.events.TouchEvent;
 import com.bitwormhole.guilink.geometries.Point;
 import com.bitwormhole.guilink.geometries.Size;
@@ -71,6 +72,29 @@ public class BoxEntity extends Box {
 
     @Override
     protected void onMouseEvent(MouseEvent event) {
+        MouseEventEnum event_type = event.getEvent();
+        if (event_type == null) {
+            return;
+        }
+        switch (event_type) {
+            case DRAGGED:
+                this.onMouseDragged(event);
+                break;
+            case HOVERED:
+                this.onMouseHovered(event);
+                break;
+            case PRESSED:
+                this.onMousePressed(event);
+                break;
+            case RELEASED:
+                this.onMouseReleased(event);
+                break;
+            case CLICKED:
+                this.onMouseClicked(event);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -124,6 +148,80 @@ public class BoxEntity extends Box {
             g.setColor(color);
             g.fillRect(x, y, w, h);
         }
+    }
+
+    @Override
+    protected void onMouseHovered(MouseEvent event) {
+        if (this.isAcceptHovering()) {
+            final BoxContext ctx = this.getContext();
+            if (ctx != null) {
+                ctx.setCurrentHovering(this);
+                this.repaint();
+            }
+        }
+    }
+
+    @Override
+    protected void onMouseDragged(MouseEvent event) {
+    }
+
+    @Override
+    protected void onMousePressed(MouseEvent event) {
+    }
+
+    @Override
+    protected void onMouseReleased(MouseEvent event) {
+    }
+
+    @Override
+    protected void onMouseClicked(MouseEvent event) {
+    }
+
+    @Override
+    protected BoxStateEnum computeCurrentState() {
+
+        // enabled
+        boolean en = this.isEnabled();
+        if (!en) {
+            return BoxStateEnum.DISABLED;
+        }
+
+        final BoxContext ctx = this.getContext();
+        Box box = null;
+        if (ctx != null) {
+
+            // hover
+            box = ctx.getCurrentHovering();
+            if (this.equals(box)) {
+                return BoxStateEnum.HOVERED;
+            }
+
+            // drag
+            box = ctx.getCurrentDragging();
+            if (this.equals(box)) {
+                return BoxStateEnum.PRESSED;
+            }
+
+        }
+
+        // selected
+        boolean sel = this.isSelected();
+        if (sel) {
+            return BoxStateEnum.SELECTED;
+        }
+
+        // normal
+        return BoxStateEnum.NORMAL;
+    }
+
+    @Override
+    public void repaint() {
+        final BoxContext ctx = this.getContext();
+        if (ctx == null) {
+            return;
+        }
+        ctx.requestRepaint();
+        ctx.getAdapter().repaint(false);
     }
 
 }

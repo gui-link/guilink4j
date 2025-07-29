@@ -16,6 +16,10 @@ public abstract class BoxAbstract
 
     public abstract void move(float x, float y, float width, float height);
 
+    // action
+
+    public abstract void repaint();
+
     ////////////////////////////////////////////////////////////////////////////
     // protected
 
@@ -27,12 +31,29 @@ public abstract class BoxAbstract
 
     protected abstract void onUpdateLayout(LayoutContext lc);
 
+    // keyboard
     protected abstract void onKeyEvent(KeyEvent event);
 
+    // mouse
     protected abstract void onMouseEvent(MouseEvent event);
 
+    protected abstract void onMouseHovered(MouseEvent event);
+
+    protected abstract void onMouseDragged(MouseEvent event);
+
+    protected abstract void onMousePressed(MouseEvent event);
+
+    protected abstract void onMouseReleased(MouseEvent event);
+
+    protected abstract void onMouseClicked(MouseEvent event);
+
+    // touch
     protected abstract void onTouchEvent(TouchEvent event);
 
+    // compute
+
     protected abstract Point computeLocationAtCanvas();
+
+    protected abstract BoxStateEnum computeCurrentState();
 
 }
