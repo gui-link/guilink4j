@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .box-margin {
+            max-width: 360px;
+            background-color: rgb(127, 182, 163);
+        }
+
+        .box-border {
+            border-color: black;
+            border-width: 3px;
+            border-style: solid;
+            background-color: rgb(11, 88, 63);
+        }
+
+        .box-padding {
+            background-color: rgb(41, 119, 93);
+        }
+
+        .box-content {
+            background-color: rgb(85, 139, 121);
+            border-color: black;
+            border-width: 3px;
+            border-style: solid;
+        }
+
+        .box {
+            padding: 20px;
+            color: whitesmoke;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <div class="box box-margin">
+        <p> margin </p>
+        <div class="box box-border">
+            <p> border </p>
+            <div class="box box-padding">
+                <p> padding </p>
+
+                <div class="box box-content">
+                    content
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p> box-sizing : content-box | border-box </p>
+
+</body>
+
+</html>

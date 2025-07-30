@@ -17,6 +17,8 @@ public abstract class Box extends BoxAbstract {
     private Point location;
     private Point locationAtCanvas;
 
+    private BoxOutside outside;
+
     private Style style;
     private StyleCache styleCache;
     private StyleLoader styleLoader;
@@ -83,20 +85,29 @@ public abstract class Box extends BoxAbstract {
     }
 
     public Style getStyle() {
-        Style st = this.style;
-        if (st == null) {
-            st = this.getStyleWithInnerLoader();
-        }
-        return st;
+        return this.getStyleWithInnerLoader(null);
     }
 
-    private Style getStyleWithInnerLoader() {
+    /***
+     * 获取与指定的状态对应的样式
+     */
+    public Style getStyle(BoxStateEnum _state) {
+        return this.getStyleWithInnerLoader(_state);
+    }
+
+    private Style getStyleWithInnerLoader(BoxStateEnum _state) {
         StyleLoader loader = this.mInnerStyleLoader;
         if (loader == null) {
             loader = new MyInnerStyleLoader();
             this.mInnerStyleLoader = loader;
         }
-        return loader.load(null);
+        StyleSelector sel = null;
+        if (_state != null) {
+            sel = new StyleSelector();
+            sel.setState(_state);
+            sel.setType(this.getClass());
+        }
+        return loader.load(sel);
     }
 
     private class MyInnerStyleLoader implements StyleLoader {
@@ -126,9 +137,9 @@ public abstract class Box extends BoxAbstract {
             // load from source
             if (sel == null) {
                 sel = new StyleSelector();
+                sel.setType(box1.getClass());
+                sel.setState(state1);
             }
-            sel.setType(box1.getClass());
-            sel.setState(state1);
             style1 = loader1.load(sel);
 
             // put to cache
@@ -337,6 +348,19 @@ public abstract class Box extends BoxAbstract {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public BoxOutside getOutside() {
+        BoxOutside bo = this.outside;
+        if (bo == null) {
+            bo = BoxOutsideComputer.compute(this, bo);
+            this.outside = bo;
+        }
+        return bo;
+    }
+
+    public void setOutside(BoxOutside outside) {
+        this.outside = outside;
     }
 
 }

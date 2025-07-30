@@ -1,6 +1,10 @@
 package com.bitwormhole.guilink.examples;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bitwormhole.guilink.boxes.BoxContext;
+import com.bitwormhole.guilink.boxes.BoxOutside;
 import com.bitwormhole.guilink.boxes.LayoutContext;
 import com.bitwormhole.guilink.boxes.PaintContext;
 import com.bitwormhole.guilink.boxes.Style;
@@ -9,6 +13,8 @@ import com.bitwormhole.guilink.widgets.View;
 import com.bitwormhole.guilink.widgets.Button;
 
 public class The10kGridsView extends View {
+
+    static final Logger logger = LoggerFactory.getLogger(The10kGridsView.class);
 
     public The10kGridsView(BoxContext bc) {
         super(bc);
@@ -43,10 +49,15 @@ public class The10kGridsView extends View {
     @Override
     protected void onPaint(PaintContext pc) {
         super.onPaint(pc);
+
+        BoxOutside out = this.getOutside();
+        logger.info(out + "");
+
     }
 
     @Override
     protected void onUpdateLayout(LayoutContext lc) {
         super.onUpdateLayout(lc);
+        this.setOutside(null);
     }
 }
