@@ -11,7 +11,8 @@ public abstract class Container extends ContainerAbstract {
     private List<Box> childrenForLayout; // 缓存用于排版的子元素
     private final List<Box> children;
 
-    public Container() {
+    public Container(BoxContext bc) {
+        super(bc);
         this.layout = new SimpleLayout();
         this.children = new ArrayList<>();
     }

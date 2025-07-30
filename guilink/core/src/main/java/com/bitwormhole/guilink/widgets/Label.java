@@ -2,6 +2,7 @@ package com.bitwormhole.guilink.widgets;
 
 import com.bitwormhole.guilink.boxes.AlignEnum;
 import com.bitwormhole.guilink.boxes.Box;
+import com.bitwormhole.guilink.boxes.BoxContext;
 import com.bitwormhole.guilink.boxes.BoxEntity;
 import com.bitwormhole.guilink.boxes.PaintContext;
 import com.bitwormhole.guilink.boxes.Style;
@@ -16,10 +17,12 @@ public class Label extends BoxEntity {
 
     private String text;
 
-    public Label() {
+    public Label(BoxContext bc) {
+        super(bc);
     }
 
-    public Label(String label) {
+    public Label(BoxContext bc, String label) {
+        super(bc);
         this.text = label;
     }
 

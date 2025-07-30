@@ -33,12 +33,14 @@ public abstract class Box extends BoxAbstract {
     private int index; // dom 顺序
     private int weight; // 排版所占的比重
     private int layoutPosition; // 用于排版的位置
+    private int id;
     private String name;
 
-    public Box() {
+    public Box(BoxContext bc) {
         this.clip = true;
         this.present = true;
         this.enabled = true;
+        this.context = bc;
     }
 
     public Size getSize() {
@@ -327,6 +329,14 @@ public abstract class Box extends BoxAbstract {
 
     public void setAcceptHovering(boolean acceptHovering) {
         this.acceptHovering = acceptHovering;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

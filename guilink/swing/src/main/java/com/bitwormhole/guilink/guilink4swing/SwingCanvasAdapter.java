@@ -43,9 +43,13 @@ public class SwingCanvasAdapter implements CanvasAdapter {
 
     public SwingCanvasAdapter() {
 
+        BoxContext bc = this.makeBoxContext();
+
         this.component = new JPanel();
-        this.canvas = new Canvas();
-        this.mBoxContext = this.makeBoxContext();
+        this.canvas = new Canvas(bc);
+        this.mBoxContext = bc;
+
+        this.init();
     }
 
     private BoxContext makeBoxContext() {
@@ -57,7 +61,7 @@ public class SwingCanvasAdapter implements CanvasAdapter {
         return bc;
     }
 
-    public void init() {
+    private void init() {
 
         JComponent com = this.component;
         MyInnerView iv = new MyInnerView();
@@ -186,7 +190,7 @@ public class SwingCanvasAdapter implements CanvasAdapter {
         public void mouseWheelMoved(MouseWheelEvent e1) {
             com.bitwormhole.guilink.events.MouseEvent e2;
             e2 = convertEvent(e1);
-            e2.setEvent(MouseEventEnum.WHEEL);
+            e2.setEvent(MouseEventEnum.WHEELED);
             dispatchMouseEvent(e2);
         }
 

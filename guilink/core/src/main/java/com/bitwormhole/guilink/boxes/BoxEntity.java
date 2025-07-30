@@ -3,9 +3,12 @@ package com.bitwormhole.guilink.boxes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bitwormhole.guilink.events.EventListenerChain;
 import com.bitwormhole.guilink.events.KeyEvent;
+import com.bitwormhole.guilink.events.KeyEventListener;
 import com.bitwormhole.guilink.events.MouseEvent;
 import com.bitwormhole.guilink.events.MouseEventEnum;
+import com.bitwormhole.guilink.events.MouseEventListener;
 import com.bitwormhole.guilink.events.TouchEvent;
 import com.bitwormhole.guilink.geometries.Point;
 import com.bitwormhole.guilink.geometries.Size;
@@ -16,6 +19,14 @@ import com.bitwormhole.guilink.utils.GuilinkGetters;
 public class BoxEntity extends Box {
 
     static final Logger logger = LoggerFactory.getLogger(BoxEntity.class);
+
+    // events
+    private EventListenerChain<KeyEvent, KeyEventListener> mKeyEventListenerChain;
+    private EventListenerChain<MouseEvent, MouseEventListener> mMouseEventListenerChain;
+
+    public BoxEntity(BoxContext bc) {
+        super(bc);
+    }
 
     @Override
     public final void updateLayout(LayoutContext lc) {
@@ -68,10 +79,28 @@ public class BoxEntity extends Box {
 
     @Override
     protected void onKeyEvent(KeyEvent event) {
+        EventListenerChain<KeyEvent, KeyEventListener> chain = this.mKeyEventListenerChain;
+        EventListenerChain.dispatchEvent(chain, event, (event2, listener2) -> {
+            if (!event2.isClosed()) {
+                listener2.onKeyEvent(event2);
+            }
+        });
     }
 
     @Override
     protected void onMouseEvent(MouseEvent event) {
+
+        EventListenerChain<MouseEvent, MouseEventListener> chain = this.mMouseEventListenerChain;
+        EventListenerChain.dispatchEvent(chain, event, (event2, listener2) -> {
+            if (!event2.isClosed()) {
+                listener2.onMouseEvent(event2);
+            }
+        });
+
+        if (event.isClosed()) {
+            return;
+        }
+
         MouseEventEnum event_type = event.getEvent();
         if (event_type == null) {
             return;
@@ -222,6 +251,101 @@ public class BoxEntity extends Box {
         }
         ctx.requestRepaint();
         ctx.getAdapter().repaint(false);
+    }
+
+    @Override
+    public Box findBoxById(int id) {
+        if (id == this.getId()) {
+            return this;
+        }
+        return null;
+    }
+
+    @Override
+    public Box findBoxByName(String name) {
+        if (name != null) {
+            if (name.equals(this.getName())) {
+                return this;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void addMouseEventListener(MouseEventListener li) {
+        EventListenerChain<MouseEvent, MouseEventListener> chain = this.mMouseEventListenerChain;
+        this.mMouseEventListenerChain = EventListenerChain.addListener(chain, li);
+    }
+
+    @Override
+    public void removeMouseEventListener(MouseEventListener li) {
+        EventListenerChain<MouseEvent, MouseEventListener> chain = this.mMouseEventListenerChain;
+        this.mMouseEventListenerChain = EventListenerChain.removeListener(chain, li);
+    }
+
+    @Override
+    public void addKeyEventListener(KeyEventListener li) {
+        EventListenerChain<KeyEvent, KeyEventListener> chain = this.mKeyEventListenerChain;
+        this.mKeyEventListenerChain = EventListenerChain.addListener(chain, li);
+    }
+
+    @Override
+    public void removeKeyEventListener(KeyEventListener li) {
+        EventListenerChain<KeyEvent, KeyEventListener> chain = this.mKeyEventListenerChain;
+        this.mKeyEventListenerChain = EventListenerChain.removeListener(chain, li);
+    }
+
+    @Override
+    public Point convertFromCanvasToLocal(Point at_canvas, Point at_local) {
+
+        Point lac = this.getLocationAtCanvas();
+
+        at_canvas = GuilinkGetters.notNull(at_canvas);
+        at_local = GuilinkGetters.notNull(at_local);
+        lac = GuilinkGetters.notNull(lac);
+
+        at_local.x = at_canvas.x - lac.x;
+        at_local.y = at_canvas.y - lac.y;
+
+        return at_local;
+    }
+
+    @Override
+    public Point convertFromLocalToCanvas(Point at_local, Point at_canvas) {
+
+        Point lac = this.getLocationAtCanvas();
+
+        at_canvas = GuilinkGetters.notNull(at_canvas);
+        at_local = GuilinkGetters.notNull(at_local);
+        lac = GuilinkGetters.notNull(lac);
+
+        at_canvas.x = at_local.x + lac.x;
+        at_canvas.y = at_local.y + lac.y;
+
+        return at_canvas;
+    }
+
+    @Override
+    public boolean containsPointAtCanvas(Point pt_c) {
+        Point pt_l = this.convertFromCanvasToLocal(pt_c, null);
+        return this.containsPointAtLocal(pt_l);
+    }
+
+    @Override
+    public boolean containsPointAtLocal(Point pt) {
+        if (pt == null) {
+            return false;
+        }
+        float x, y, w, h;
+        x = pt.x;
+        y = pt.y;
+        final Size s = this.getSize();
+        if (s == null) {
+            return false;
+        }
+        w = s.width;
+        h = s.height;
+        return ((0 <= x) && (0 <= y) && (x < w) && (y < h));
     }
 
 }

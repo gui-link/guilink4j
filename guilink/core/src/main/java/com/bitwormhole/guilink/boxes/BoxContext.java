@@ -11,14 +11,15 @@ public class BoxContext {
 
     static final Logger logger = LoggerFactory.getLogger(BoxContext.class);
 
-    private Executor uiExecutor;
     private Theme theme;
-    private int layoutRevision;
-    private int paintRevision;
+    private Executor uiExecutor;
     private CanvasAdapter adapter;
 
     private Box currentHovering;
     private Box currentDragging;
+
+    private int layoutRevision;
+    private int paintRevision;
 
     public BoxContext() {
     }

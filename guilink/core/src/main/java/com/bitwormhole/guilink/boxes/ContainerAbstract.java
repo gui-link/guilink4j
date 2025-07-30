@@ -13,6 +13,10 @@ public abstract class ContainerAbstract extends BoxEntity {
 
     public abstract void add(Box child, int layout_pos);
 
+    public ContainerAbstract(BoxContext bc) {
+        super(bc);
+    }
+
     /***
      * 更新容器中的子元素的排版
      */

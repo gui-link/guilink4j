@@ -1,5 +1,7 @@
 package com.bitwormhole.guilink.events;
 
-public class KeyEventListener  {
-    
+public interface KeyEventListener {
+
+    void onKeyEvent(KeyEvent event);
+
 }

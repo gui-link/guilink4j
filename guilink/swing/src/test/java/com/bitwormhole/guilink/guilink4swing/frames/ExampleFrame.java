@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import com.bitwormhole.guilink.boxes.BoxContext;
 import com.bitwormhole.guilink.examples.The9GridsView;
 import com.bitwormhole.guilink.examples.TheLinearView;
 import com.bitwormhole.guilink.guilink4swing.JFrameWithLife;
@@ -43,13 +44,14 @@ public class ExampleFrame extends JFrameWithLife {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         SwingCanvasAdapter adapter = new SwingCanvasAdapter();
-        adapter.init();
+        BoxContext bc = adapter.getCanvas().getContext();
+
         this.setLayout(new BorderLayout());
         this.add(adapter.getComponent(), BorderLayout.CENTER);
 
-        Space space = new Space();
-        The9GridsView view1 = new The9GridsView();
-        TheLinearView view2 = new TheLinearView(LinearLayout.Direction.HORIZONTAL);
+        Space space = new Space(bc);
+        The9GridsView view1 = new The9GridsView(bc);
+        TheLinearView view2 = new TheLinearView(bc, LinearLayout.Direction.HORIZONTAL);
 
         adapter.getCanvas().add(view1);
 

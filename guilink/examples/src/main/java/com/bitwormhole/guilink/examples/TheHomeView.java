@@ -1,7 +1,9 @@
 package com.bitwormhole.guilink.examples;
 
+import com.bitwormhole.guilink.boxes.BoxContext;
 import com.bitwormhole.guilink.boxes.BoxStateEnum;
 import com.bitwormhole.guilink.boxes.PaintContext;
+import com.bitwormhole.guilink.events.MouseEvent;
 import com.bitwormhole.guilink.layouts.LinearLayout;
 import com.bitwormhole.guilink.widgets.Button;
 import com.bitwormhole.guilink.widgets.Label;
@@ -9,7 +11,8 @@ import com.bitwormhole.guilink.widgets.View;
 
 public class TheHomeView extends View {
 
-    public TheHomeView() {
+    public TheHomeView(BoxContext bc) {
+        super(bc);
         this.onCreate();
     }
 
@@ -17,12 +20,13 @@ public class TheHomeView extends View {
 
         this.setLayout(new LinearLayout(LinearLayout.Direction.VERTICAL));
 
-        Label label = new Label("hello: " + this);
+        BoxContext bc = this.getContext();
+        Label label = new Label(bc, "hello: " + this);
         label.setWeight(1);
         this.add(label);
 
         for (int i = 0; i < 5; i++) {
-            Button btn = new MyButton("btn-" + i);
+            Button btn = new MyButton(bc, "btn-" + i);
             btn.setWeight(1);
             this.add(btn);
         }
@@ -31,8 +35,18 @@ public class TheHomeView extends View {
 
     class MyButton extends Button {
 
-        MyButton(String txt) {
-            super(txt);
+        MyButton(BoxContext bc, String txt) {
+            super(bc, txt);
+        }
+
+        @Override
+        protected void onMouseHovered(MouseEvent event) {
+            super.onMouseHovered(event);
+        }
+
+        @Override
+        protected void onMousePressed(MouseEvent event) {
+            super.onMousePressed(event);
         }
 
         @Override
@@ -46,5 +60,9 @@ public class TheHomeView extends View {
             super.onPaintForeground(pc);
         }
 
+    }
+
+    public void addButton(Button btn) {
+        this.add(btn);
     }
 }

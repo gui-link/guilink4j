@@ -11,6 +11,10 @@ import com.bitwormhole.guilink.layouts.SimpleLayout;
 
 public class ContainerEntity extends Container {
 
+    public ContainerEntity(BoxContext bc) {
+        super(bc);
+    }
+
     @Override
     public void updateLayoutForChildren(LayoutContext lc) {
         this.onUpdateLayoutForChildren(lc);
@@ -161,14 +165,18 @@ public class ContainerEntity extends Container {
 
     @Override
     protected void dispatchMouseEventToChildren(MouseEvent me) {
-        List<Box> list = this.getChildrenForLayout();
+        final Point pt_at_canvas = me.getLocationAtCanvas();
+        final List<Box> list = this.getChildrenForLayout();
         for (int i = list.size() - 1; i >= 0; i--) {
             if (innerIsEventClosed(me)) {
                 break;
             }
             Box child = list.get(i);
             if (innerIsHitChild(me, child)) {
-                child.handleMouseEvent(me);
+                Point pt_at_child = child.convertFromCanvasToLocal(pt_at_canvas, null);
+                MouseEvent me2 = me.copyThis();
+                me2.setLocation(pt_at_child);
+                child.handleMouseEvent(me2);
             }
         }
     }
@@ -177,27 +185,74 @@ public class ContainerEntity extends Container {
         if (me == null) {
             return true;
         }
-        return (me.isCancelled() || me.isHandled());
+        return me.isClosed();
     }
 
     private static boolean innerIsHitChild(MouseEvent me, Box child) {
         if (me == null || child == null) {
             return false;
         }
+        return child.containsPointAtCanvas(me.getLocationAtCanvas());
+    }
 
-        Point pt1 = me.getLocationAtCanvas();
-        Point pt2 = child.getLocationAtCanvas();
-        Size sz = child.getSize();
+    @Override
+    public Box findBoxById(int id) {
 
-        final float left, top, right, bottom, x, y;
-        x = pt1.x;
-        y = pt1.y;
-        top = pt2.y;
-        left = pt2.x;
-        right = pt2.x + sz.width;
-        bottom = pt2.y + sz.height;
+        // check this
+        if (id == this.getId()) {
+            return this;
+        }
 
-        return ((left < x) && (top < y) && (y < bottom) && (x < right));
+        final List<Box> list = this.getChildren();
+
+        // find direct child
+        for (Box child : list) {
+            if (child.getId() == id) {
+                return child;
+            }
+        }
+
+        // find into
+        for (Box child : list) {
+            Box res = child.findBoxById(id);
+            if (res != null) {
+                return res;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Box findBoxByName(String name) {
+
+        if (name == null) {
+            return null;
+        }
+
+        // check this
+        if (name.equals(this.getName())) {
+            return this;
+        }
+
+        final List<Box> list = this.getChildren();
+
+        // find direct child
+        for (Box child : list) {
+            if (name.equals(child.getName())) {
+                return child;
+            }
+        }
+
+        // find into
+        for (Box child : list) {
+            Box res = child.findBoxByName(name);
+            if (res != null) {
+                return res;
+            }
+        }
+
+        return null;
     }
 
 }

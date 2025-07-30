@@ -1,5 +1,6 @@
 package com.bitwormhole.guilink.examples;
 
+import com.bitwormhole.guilink.boxes.BoxContext;
 import com.bitwormhole.guilink.layouts.LinearLayout;
 import com.bitwormhole.guilink.widgets.Button;
 import com.bitwormhole.guilink.widgets.View;
@@ -8,7 +9,8 @@ public class TheLinearView extends View {
 
     private LinearLayout.Direction mDirection;
 
-    public TheLinearView(LinearLayout.Direction dir) {
+    public TheLinearView(BoxContext bc, LinearLayout.Direction dir) {
+        super(bc);
         this.mDirection = dir;
         this.onCreate();
     }
@@ -22,7 +24,8 @@ public class TheLinearView extends View {
 
     private void addExampleChildrenToView(View view) {
 
-        Button btn = new Button();
+        BoxContext bc = this.getContext();
+        Button btn = new Button(bc);
 
         this.add(btn);
 

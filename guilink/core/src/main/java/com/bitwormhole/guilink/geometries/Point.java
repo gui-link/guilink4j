@@ -23,7 +23,7 @@ public class Point {
 
     @Override
     public String toString() {
-        return "[Size x:" + this.x + " y:" + this.y + "]";
+        return "[Point x:" + this.x + " y:" + this.y + "]";
     }
 
 }

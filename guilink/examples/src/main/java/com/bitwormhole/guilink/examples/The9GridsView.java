@@ -8,6 +8,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import com.bitwormhole.guilink.boxes.AlignEnum;
 import com.bitwormhole.guilink.boxes.Box;
+import com.bitwormhole.guilink.boxes.BoxContext;
 import com.bitwormhole.guilink.boxes.DefaultValueStyle;
 import com.bitwormhole.guilink.boxes.LayoutContext;
 import com.bitwormhole.guilink.boxes.LineStyleEnum;
@@ -25,7 +26,8 @@ public class The9GridsView extends View {
 
     private final Map<Integer, MyAlignTemplate> mAlignTemplateTable;
 
-    public The9GridsView() {
+    public The9GridsView(BoxContext bc) {
+        super(bc);
         this.mAlignTemplateTable = this.makeAlignTemplateTable();
         this.onCreate();
     }
@@ -37,8 +39,10 @@ public class The9GridsView extends View {
         cols = 3;
         count = rows * cols;
 
+        BoxContext bc = this.getContext();
+
         for (int i = 0; i < count; i++) {
-            Button btn = new MyButton("btn-" + i);
+            Button btn = new MyButton(bc, "btn-" + i);
             this.applyButtonStyle(btn, i);
             this.add(btn);
         }
@@ -126,8 +130,8 @@ public class The9GridsView extends View {
 
     private static class MyButton extends Button {
 
-        public MyButton(String txt) {
-            super(txt);
+        public MyButton(BoxContext bc, String txt) {
+            super(bc, txt);
 
             this.setClip(false);
         }

@@ -1,5 +1,5 @@
 package com.bitwormhole.guilink.events;
 
-public class KeyEvent   {
-    
+public class KeyEvent extends CommonEvent {
+
 }

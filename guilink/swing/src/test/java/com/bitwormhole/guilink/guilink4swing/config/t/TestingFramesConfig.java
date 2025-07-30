@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.bitwormhole.guilink.guilink4swing.frames.ExampleFrame;
 import com.bitwormhole.guilink.guilink4swing.frames.HomeFrame;
-
+import com.bitwormhole.guilink.guilink4swing.frames.The10kGridsFrame;
 import com.bitwormhole.starter4j.application.ComponentRegistryFunc;
 import com.bitwormhole.starter4j.application.ComponentTemplate;
 import com.bitwormhole.starter4j.application.ComponentTemplate.RegistrationT;
@@ -38,6 +38,7 @@ final class TestingFramesConfig implements FrameRegistry {
 
         list.add(ExampleFrame.registration());
         list.add(HomeFrame.registration());
+        list.add(The10kGridsFrame.registration());
 
         return list;
     }
