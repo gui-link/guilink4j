@@ -142,15 +142,19 @@ public class ContainerEntity extends Container {
     private static Graphics prepareGraphicsForChild(Graphics g1, Container parent, Box child) {
         Size size = child.getSize();
         Point at = child.getLocation();
-        Graphics g2;
+        Graphics g2 = g1.create();
+
+        // translate
+        g2.translate(at.x, at.y);
+
+        // clip
+        child.setClip(false); // TODO: 先暂时禁用剪切
         if (child.isClip()) {
             // do clip
-            g2 = g1.create(at.x, at.y, size.width, size.height);
-        } else {
-            // with out clip
-            g2 = g1.create();
-            g2.translate(at.x, at.y);
+            // g2 = g1.create(at.x, at.y, size.width, size.height);
+            g2.clip(at.x, at.y, size.width, size.height);
         }
+
         return g2;
     }
 

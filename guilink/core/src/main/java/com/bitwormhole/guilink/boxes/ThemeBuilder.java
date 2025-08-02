@@ -1,9 +1,10 @@
 package com.bitwormhole.guilink.boxes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import com.bitwormhole.guilink.themes.DefaultValueThemeWrapper;
+import com.bitwormhole.guilink.themes.NormalBasedThemeWrapper;
+import com.bitwormhole.guilink.themes.ThemeImpl;
 
 public class ThemeBuilder {
 
@@ -44,15 +45,12 @@ public class ThemeBuilder {
 
     public Theme create() {
         List<StylePipelineRegistration> src = this.registrations;
-
-        // Map<Class<?>, StylePipelineRegistration> table = new HashMap<>();
-        // for (StylePipelineRegistration item : src) {
-        // Class<?> key = item.getTargetType();
-        // table.put(key, item);
-        // }
-
         Theme th = new ThemeImpl(src);
-        th = new DefaultValueTheme(th);
+
+        // do wrap
+        th = new NormalBasedThemeWrapper(th);
+        th = new DefaultValueThemeWrapper(th);
+
         return th;
     }
 

@@ -8,9 +8,18 @@ public class ThemeWrapper extends Theme {
         this.inner = in;
     }
 
-    @Override
-    public Style load(StyleSelector selector) {
+    protected Style onLoadStyle(StyleSelector selector) {
         return this.inner.load(selector);
+    }
+
+    @Override
+    public final Style load(StyleSelector selector) {
+        return this.onLoadStyle(selector);
+    }
+
+    @Override
+    public final Style select(StyleSelector sel) {
+        return this.onLoadStyle(sel);
     }
 
 }

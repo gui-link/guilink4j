@@ -17,6 +17,7 @@ public class BoxContext {
 
     private Box currentHovering;
     private Box currentDragging;
+    private Box currentPressed;
 
     private int layoutRevision;
     private int paintRevision;
@@ -77,9 +78,6 @@ public class BoxContext {
     }
 
     public void setCurrentHovering(Box currentHovering) {
-
-        // logger.info(".setCurrentHovering(), box = " + currentHovering);
-
         this.currentHovering = currentHovering;
     }
 
@@ -89,6 +87,14 @@ public class BoxContext {
 
     public void setCurrentDragging(Box currentDragging) {
         this.currentDragging = currentDragging;
+    }
+
+    public Box getCurrentPressed() {
+        return currentPressed;
+    }
+
+    public void setCurrentPressed(Box currentPressed) {
+        this.currentPressed = currentPressed;
     }
 
 }

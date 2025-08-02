@@ -56,6 +56,7 @@ public abstract class Box extends BoxAbstract {
 
     public void setSize(Size size) {
         this.size = size;
+        this.outside = null; // 清除缓存的 outside 对象
     }
 
     public Point getLocation() {
@@ -85,7 +86,11 @@ public abstract class Box extends BoxAbstract {
     }
 
     public Style getStyle() {
-        return this.getStyleWithInnerLoader(null);
+        Style sty = this.style;
+        if (sty != null) {
+            return sty;
+        }
+        return this.getStyle(null);
     }
 
     /***
@@ -101,12 +106,12 @@ public abstract class Box extends BoxAbstract {
             loader = new MyInnerStyleLoader();
             this.mInnerStyleLoader = loader;
         }
-        StyleSelector sel = null;
-        if (_state != null) {
-            sel = new StyleSelector();
-            sel.setState(_state);
-            sel.setType(this.getClass());
+        if (_state == null) {
+            _state = this.getState();
         }
+        StyleSelector sel = new StyleSelector();
+        sel.setState(_state);
+        sel.setType(this.getClass());
         return loader.load(sel);
     }
 
@@ -115,8 +120,14 @@ public abstract class Box extends BoxAbstract {
         @Override
         public Style load(StyleSelector sel) {
 
+            if (sel == null) {
+                sel = new StyleSelector();
+                sel.setType(Box.this.getClass());
+                sel.setState(Box.this.getState());
+            }
+
             final Box box1 = Box.this;
-            BoxStateEnum state1 = box1.getState();
+            BoxStateEnum state1 = sel.getState();
             StyleCache cache1 = box1.styleCache;
             StyleLoader loader1 = box1.styleLoader;
 
@@ -135,11 +146,6 @@ public abstract class Box extends BoxAbstract {
             }
 
             // load from source
-            if (sel == null) {
-                sel = new StyleSelector();
-                sel.setType(box1.getClass());
-                sel.setState(state1);
-            }
             style1 = loader1.load(sel);
 
             // put to cache
@@ -150,10 +156,13 @@ public abstract class Box extends BoxAbstract {
         }
 
         private BoxStateEnum prepareState(BoxStateEnum state1) {
-            if (state1 != null) {
-                return state1;
+            if (state1 == null) {
+                state1 = Box.this.getState();
             }
-            return BoxStateEnum.NORMAL;
+            if (state1 == null) {
+                state1 = BoxStateEnum.NORMAL;
+            }
+            return state1;
         }
 
         private StyleLoader prepareLoader(StyleLoader loader) {
@@ -353,7 +362,7 @@ public abstract class Box extends BoxAbstract {
     public BoxOutside getOutside() {
         BoxOutside bo = this.outside;
         if (bo == null) {
-            bo = BoxOutsideComputer.compute(this, bo);
+            bo = BoxOutsideComputer.computeBoxOutside(this, bo);
             this.outside = bo;
         }
         return bo;

@@ -56,8 +56,6 @@ public class DefaultTheme extends BaseTheme {
         disabled.setPipeline((style) -> {
             Color gray1 = new Color(200, 200, 200, 255);
             Color gray2 = new Color(220, 220, 220, 255);
-            style.setBorderStyle(LineStyleEnum.SOLID);
-            style.setBorderWidth(1f);
             style.setBorderColor(gray2);
             style.setBackgroundColor(gray1);
             style.setForegroundColor(gray2);
@@ -98,29 +96,49 @@ public class DefaultTheme extends BaseTheme {
 
         final StylePipelineRegistration normal = new StylePipelineRegistration();
         final StylePipelineRegistration hover = new StylePipelineRegistration();
+        final StylePipelineRegistration pressed = new StylePipelineRegistration();
+
+        final Font font = new Font();
+        font.setSize(13);
+        font.setWeight(0.5f);
+        font.setFamily("default");
+        font.setItalic(false);
 
         normal.setTargetType(tt);
         normal.setState(BoxStateEnum.NORMAL);
         normal.setPipeline((style) -> {
-            style.setBorderWidth(12.0f);
+            style.setMargin(2.0f);
+            style.setBorderWidth(1.0f);
             style.setBorderColor(Color.GRAY);
             style.setBorderStyle(LineStyleEnum.SOLID);
-            style.setMargin(2f);
-            style.setPadding(2f);
+            style.setPadding(3f);
+            style.setForegroundColor(Color.GRAY);
             return style;
         });
 
         hover.setTargetType(tt);
         hover.setState(BoxStateEnum.HOVERED);
         hover.setPipeline((style) -> {
-            style.setBorderWidth(12.0f);
-            style.setBorderColor(Color.RED);
-            style.setBorderStyle(LineStyleEnum.SOLID);
-            style.setMargin(2f);
-            style.setPadding(2f);
+            style.setMargin(1.0f);
+            style.setBorderWidth(2.0f);
+            style.setBorderColor(Color.BLACK);
+            // style.setFont(font);
+            style.setForegroundColor(Color.BLACK);
             return style;
         });
 
+        pressed.setTargetType(tt);
+        pressed.setState(BoxStateEnum.PRESSED);
+        pressed.setPipeline((style) -> {
+            // style.setMargin(2.0f);
+            // style.setBorderWidth(1.0f);
+            style.setFont(font);
+            style.setBorderColor(Color.BLUE);
+            style.setForegroundColor(Color.BLUE);
+            return style;
+        });
+
+        builder.add(pressed);
         builder.add(normal);
         builder.add(hover);
     }

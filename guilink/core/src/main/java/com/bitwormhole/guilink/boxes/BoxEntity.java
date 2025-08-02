@@ -219,6 +219,12 @@ public class BoxEntity extends Box {
         Box box = null;
         if (ctx != null) {
 
+            // pressed
+            box = ctx.getCurrentPressed();
+            if (this.equals(box)) {
+                return BoxStateEnum.PRESSED;
+            }
+
             // hover
             box = ctx.getCurrentHovering();
             if (this.equals(box)) {

@@ -32,4 +32,20 @@ public class Rect {
         return "[Rect x:" + this.x + " y:" + this.y + " w:" + this.width + " h:" + this.height + "]";
     }
 
+    public float top() {
+        return this.y;
+    }
+
+    public float left() {
+        return this.x;
+    }
+
+    public float right() {
+        return (this.x + this.width);
+    }
+
+    public float bottom() {
+        return (this.y + this.height);
+    }
+
 }

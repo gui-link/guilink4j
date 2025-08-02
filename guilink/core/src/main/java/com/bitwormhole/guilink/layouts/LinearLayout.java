@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bitwormhole.guilink.boxes.Box;
+import com.bitwormhole.guilink.boxes.BoxOutside;
+import com.bitwormhole.guilink.boxes.BoxOutsideComputer;
 import com.bitwormhole.guilink.boxes.Container;
 import com.bitwormhole.guilink.boxes.Layout;
 import com.bitwormhole.guilink.boxes.LayoutContext;
 import com.bitwormhole.guilink.geometries.Point;
+import com.bitwormhole.guilink.geometries.Rect;
 import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.utils.GuilinkGetters;
 
@@ -127,21 +130,28 @@ public class LinearLayout implements Layout {
         // 口
         // 口
 
-        Size p_size = getParentSize(parent);
+        Rect p_client = getParentClientRect(parent);
         List<Box> children = parent.getChildren();
         List<ChildHolder> holders = this.makeHolderList(children);
 
-        float x, y, w, h;
-        x = y = 0;
-        w = p_size.width;
+        final Rect margin_outside = new Rect();
+        float y, h;
+        y = p_client.y;
 
-        computeLengths(holders, p_size.height);
+        computeLengths(holders, p_client.height);
 
         for (ChildHolder holder : holders) {
             final Box child = holder.child;
             h = holder.lengthFinal;
-            child.setLocation(new Point(x, y));
-            child.setSize(new Size(w, h));
+
+            margin_outside.x = p_client.x;
+            margin_outside.y = y;
+            margin_outside.width = p_client.width;
+            margin_outside.height = h;
+
+            Rect child_rect = computeChildRectByMarginOutside(child, margin_outside);
+            child.setLocation(new Point(child_rect.x, child_rect.y));
+            child.setSize(new Size(child_rect.width, child_rect.height));
             y += h;
         }
     }
@@ -150,40 +160,49 @@ public class LinearLayout implements Layout {
 
         // layout like: 口口口口口
 
-        Size p_size = getParentSize(parent);
+        Rect p_client = getParentClientRect(parent);
         List<Box> children = parent.getChildren();
         List<ChildHolder> holders = this.makeHolderList(children);
 
-        float x, y, w, h;
-        x = y = 0;
-        h = p_size.height;
+        final Rect margin_outside = new Rect();
+        float x, w;
+        x = p_client.x;
 
-        computeLengths(holders, p_size.width);
+        computeLengths(holders, p_client.width);
 
         for (ChildHolder holder : holders) {
             final Box child = holder.child;
             w = holder.lengthFinal;
-            child.setLocation(new Point(x, y));
-            child.setSize(new Size(w, h));
+
+            margin_outside.x = x;
+            margin_outside.y = p_client.y;
+            margin_outside.width = w;
+            margin_outside.height = p_client.height;
+
+            Rect child_rect = computeChildRectByMarginOutside(child, margin_outside);
+            child.setLocation(new Point(child_rect.x, child_rect.y));
+            child.setSize(new Size(child_rect.width, child_rect.height));
             x += w;
         }
     }
 
-    private static Size getParentSize(Container parent) {
+    private static Rect computeChildRectByMarginOutside(Box child, Rect margin_outside) {
+        return BoxOutsideComputer.computeBoxRectByMarginOutside(child, margin_outside);
+    }
 
-        Size size;
+    private static Rect getParentClientRect(Container parent) {
 
-        size = parent.getSize();
-        if (size != null) {
-            return size;
+        BoxOutside out = parent.getOutside();
+        if (out == null) {
+            return new Rect();
         }
 
-        // size = parent.getWantSize();
-        // if (size != null) {
-        // return size;
-        // }
+        Rect rect = out.getContent();
+        if (rect == null) {
+            return new Rect();
+        }
 
-        return new Size();
+        return rect;
     }
 
 }

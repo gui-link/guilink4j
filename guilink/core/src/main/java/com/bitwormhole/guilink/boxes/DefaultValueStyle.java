@@ -156,4 +156,65 @@ public class DefaultValueStyle extends StyleWrapper {
         return super.getPadding();
     }
 
+    @Override
+    public Float getMargin() {
+        Float v1 = super.getMargin();
+        if (v1 != null) {
+            return v1;
+        }
+        return 0f;
+    }
+
+    @Override
+    public Float getMarginBottom() {
+        Float v1 = super.getMarginBottom();
+        if (v1 != null) {
+            return v1;
+        }
+        v1 = super.getMargin();
+        if (v1 != null) {
+            return v1;
+        }
+        return 0f;
+    }
+
+    @Override
+    public Float getMarginLeft() {
+        Float v1 = super.getMarginLeft();
+        if (v1 != null) {
+            return v1;
+        }
+        v1 = super.getMargin();
+        if (v1 != null) {
+            return v1;
+        }
+        return 0f;
+    }
+
+    @Override
+    public Float getMarginRight() {
+        Float v1 = super.getMarginRight();
+        if (v1 != null) {
+            return v1;
+        }
+        v1 = super.getMargin();
+        if (v1 != null) {
+            return v1;
+        }
+        return 0f;
+    }
+
+    @Override
+    public Float getMarginTop() {
+        Float v1 = super.getMarginTop();
+        if (v1 != null) {
+            return v1;
+        }
+        v1 = super.getMargin();
+        if (v1 != null) {
+            return v1;
+        }
+        return 0f;
+    }
+
 }

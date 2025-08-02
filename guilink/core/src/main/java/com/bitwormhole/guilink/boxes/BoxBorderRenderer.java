@@ -1,84 +1,127 @@
 package com.bitwormhole.guilink.boxes;
 
-import com.bitwormhole.guilink.geometries.Size;
+import com.bitwormhole.guilink.geometries.Rect;
 import com.bitwormhole.guilink.graphics.Color;
 import com.bitwormhole.guilink.graphics.Graphics;
-import com.bitwormhole.guilink.graphics.strokes.BasicStroke;
 import com.bitwormhole.guilink.utils.GuilinkGetters;
 
 final class BoxBorderRenderer {
 
     public static void paintBorder(PaintContext pc, Box box) {
 
-        Size size = box.getSize();
-        Graphics g = pc.graphics;
-        Style bs = GuilinkGetters.notNull(box.getStyle());
+        final BoxOutside outside = box.getOutside();
+        final Graphics g = pc.graphics;
+        final Style box_style = GuilinkGetters.notNull(box.getStyle());
+        final Rect border_side_rect = new Rect();
 
-        if (size == null) {
-            return;
-        }
+        Rect side = null;
+        Color color = null;
+        LineStyleEnum style = null;
 
-        Color color = bs.getBorderTopColor();
-        Float width = bs.getBorderTopWidth();
-        LineStyleEnum style = bs.getBorderTopStyle();
-        float x1;
-        float x2;
-        float y1;
-        float y2;
-        if (innerHasBorder(color, style, width)) {
-            x1 = 0;
-            y1 = 0;
-            x2 = size.width;
-            y2 = 0;
-            g.setStroke(new BasicStroke((float) width));
+        // top
+        color = box_style.getBorderTopColor();
+        style = box_style.getBorderTopStyle();
+        side = innerGetBorderTop(outside, border_side_rect);
+        if (innerHasBorderSide(color, style, side)) {
             g.setColor(color);
-            g.drawLine(x1, y1, x2, y2);
+            g.fillRect(side.x, side.y, side.width, side.height);
         }
 
-        color = bs.getBorderLeftColor();
-        width = bs.getBorderLeftWidth();
-        style = bs.getBorderLeftStyle();
-        if (innerHasBorder(color, style, width)) {
-            x1 = 0;
-            y1 = 0;
-            x2 = 0;
-            y2 = size.height;
-            g.setStroke(new BasicStroke((float) width));
+        // left
+        color = box_style.getBorderLeftColor();
+        style = box_style.getBorderLeftStyle();
+        side = innerGetBorderLeft(outside, border_side_rect);
+        if (innerHasBorderSide(color, style, side)) {
             g.setColor(color);
-            g.drawLine(x1, y1, x2, y2);
+            g.fillRect(side.x, side.y, side.width, side.height);
         }
 
-        color = bs.getBorderRightColor();
-        width = bs.getBorderRightWidth();
-        style = bs.getBorderRightStyle();
-        if (innerHasBorder(color, style, width)) {
-            x1 = size.width;
-            y1 = 0;
-            x2 = size.width;
-            y2 = size.height;
-            g.setStroke(new BasicStroke((float) width));
+        // right
+        color = box_style.getBorderRightColor();
+        style = box_style.getBorderRightStyle();
+        side = innerGetBorderRight(outside, border_side_rect);
+        if (innerHasBorderSide(color, style, side)) {
             g.setColor(color);
-            g.drawLine(x1, y1, x2, y2);
+            g.fillRect(side.x, side.y, side.width, side.height);
         }
 
-        color = bs.getBorderBottomColor();
-        width = bs.getBorderBottomWidth();
-        style = bs.getBorderBottomStyle();
-        if (innerHasBorder(color, style, width)) {
-            x1 = 0;
-            y1 = size.height;
-            x2 = size.width;
-            y2 = size.height;
-            g.setStroke(new BasicStroke((float) width));
+        // bottom
+        color = box_style.getBorderBottomColor();
+        style = box_style.getBorderBottomStyle();
+        side = innerGetBorderBottom(outside, border_side_rect);
+        if (innerHasBorderSide(color, style, side)) {
             g.setColor(color);
-            g.drawLine(x1, y1, x2, y2);
+            g.fillRect(side.x, side.y, side.width, side.height);
         }
-
     }
 
-    private static boolean innerHasBorder(Color c, LineStyleEnum s, Float w) {
+    static Rect innerGetBorderTop(BoxOutside outside, Rect dst) {
+        if (outside == null || dst == null) {
+            return null;
+        }
+        Rect b = outside.getBorder();
+        Rect p = outside.getPadding();
+        if (b == null || p == null) {
+            return null;
+        }
+        dst.x = b.x;
+        dst.y = b.y;
+        dst.width = b.width;
+        dst.height = p.y - b.y;
+        return dst;
+    }
 
-        if (w == null) {
+    static Rect innerGetBorderLeft(BoxOutside outside, Rect dst) {
+        if (outside == null || dst == null) {
+            return null;
+        }
+        Rect b = outside.getBorder();
+        Rect p = outside.getPadding();
+        if (b == null || p == null) {
+            return null;
+        }
+        dst.x = b.x;
+        dst.y = b.y;
+        dst.width = p.x - b.x;
+        dst.height = b.height;
+        return dst;
+    }
+
+    static Rect innerGetBorderRight(BoxOutside outside, Rect dst) {
+        if (outside == null || dst == null) {
+            return null;
+        }
+        Rect b = outside.getBorder();
+        Rect p = outside.getPadding();
+        if (b == null || p == null) {
+            return null;
+        }
+        dst.x = p.right();
+        dst.y = b.y;
+        dst.width = b.right() - p.right();
+        dst.height = b.height;
+        return dst;
+    }
+
+    static Rect innerGetBorderBottom(BoxOutside outside, Rect dst) {
+        if (outside == null || dst == null) {
+            return null;
+        }
+        Rect b = outside.getBorder();
+        Rect p = outside.getPadding();
+        if (b == null || p == null) {
+            return null;
+        }
+        dst.x = b.x;
+        dst.y = p.bottom();
+        dst.width = b.width;
+        dst.height = b.bottom() - p.bottom();
+        return dst;
+    }
+
+    private static boolean innerHasBorderSide(Color c, LineStyleEnum s, Rect side) {
+
+        if (side == null) {
             return false;
         }
 

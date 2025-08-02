@@ -255,8 +255,14 @@ public class SwingCanvasAdapter implements CanvasAdapter {
         this.canvas.paint(pc);
     }
 
+    private void checkLayoutUpdatingAndRepaint() {
+        this.updateLayout(false);
+        this.repaint(false);
+    }
+
     private void dispatchMouseEvent(com.bitwormhole.guilink.events.MouseEvent e) {
         this.canvas.handleMouseEvent(e);
+        this.checkLayoutUpdatingAndRepaint();
     }
 
     private void dispatchKeyEvent(com.bitwormhole.guilink.events.KeyEvent event) {

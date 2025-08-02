@@ -3,10 +3,12 @@ package com.bitwormhole.guilink.layouts;
 import java.util.List;
 
 import com.bitwormhole.guilink.boxes.Box;
+import com.bitwormhole.guilink.boxes.BoxOutside;
+import com.bitwormhole.guilink.boxes.BoxOutsideComputer;
 import com.bitwormhole.guilink.boxes.Container;
 import com.bitwormhole.guilink.boxes.Layout;
 import com.bitwormhole.guilink.boxes.LayoutContext;
-import com.bitwormhole.guilink.geometries.Size;
+import com.bitwormhole.guilink.geometries.Rect;
 
 public class SimpleLayout implements Layout {
 
@@ -14,13 +16,13 @@ public class SimpleLayout implements Layout {
     public void applyLayout(LayoutContext lc, Container container) {
 
         List<Box> clist = container.getChildren();
-        Size p_size = container.getSize();
-        final float w = p_size.width;
-        final float h = p_size.height;
+        BoxOutside p_outside = container.getOutside();
+        Rect p_content_rect = p_outside.getContent();
 
         clist.forEach((child) -> {
             if (isChildReady(child)) {
-                child.move(0, 0, w, h);
+                Rect rect2 = BoxOutsideComputer.computeBoxRectByMarginOutside(child, p_content_rect);
+                child.move(rect2.x, rect2.y, rect2.width, rect2.height);
             }
         });
 

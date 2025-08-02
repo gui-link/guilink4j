@@ -1,4 +1,4 @@
-package com.bitwormhole.guilink.boxes;
+package com.bitwormhole.guilink.themes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,7 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-final class ThemeImpl extends Theme {
+import com.bitwormhole.guilink.boxes.BoxStateEnum;
+import com.bitwormhole.guilink.boxes.Style;
+import com.bitwormhole.guilink.boxes.StylePipeline;
+import com.bitwormhole.guilink.boxes.StylePipelineRegistration;
+import com.bitwormhole.guilink.boxes.StyleSelector;
+import com.bitwormhole.guilink.boxes.Theme;
+
+public final class ThemeImpl extends Theme {
 
     private final Map<MyTableKey, MyTableValue> table;
 
