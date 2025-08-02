@@ -7,7 +7,6 @@ import com.bitwormhole.guilink.boxes.BoxContext;
 import com.bitwormhole.guilink.boxes.BoxStateEnum;
 import com.bitwormhole.guilink.boxes.LayoutContext;
 import com.bitwormhole.guilink.boxes.PaintContext;
-import com.bitwormhole.guilink.boxes.Style;
 import com.bitwormhole.guilink.events.MouseEvent;
 import com.bitwormhole.guilink.layouts.LinearLayout;
 import com.bitwormhole.guilink.widgets.Button;
@@ -35,14 +34,6 @@ public class TheHomeView extends View {
         for (int i = 0; i < 5; i++) {
             Button btn = new MyButton(bc, "btn-" + i);
             btn.setWeight(1);
-
-            // btn.getStyle().setMargin(2f);
-            // btn.getStyle().setBorderWidth(5f);
-            // btn.getStyle().setPadding(10f);
-
-            Style sty = btn.getStyle();
-            sty.getBorderColor();
-
             this.add(btn);
         }
 

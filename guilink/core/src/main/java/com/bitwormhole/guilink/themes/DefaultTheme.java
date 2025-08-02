@@ -124,6 +124,7 @@ public class DefaultTheme extends BaseTheme {
             style.setBorderColor(Color.BLACK);
             // style.setFont(font);
             style.setForegroundColor(Color.BLACK);
+            style.setBackgroundColor(Color.GRAY9);
             return style;
         });
 
@@ -135,6 +136,7 @@ public class DefaultTheme extends BaseTheme {
             style.setFont(font);
             style.setBorderColor(Color.BLUE);
             style.setForegroundColor(Color.BLUE);
+            style.setBackgroundColor(Color.GRAY9);
             return style;
         });
 

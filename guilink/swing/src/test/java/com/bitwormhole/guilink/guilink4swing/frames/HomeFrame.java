@@ -67,6 +67,7 @@ public class HomeFrame extends JFrameWithLife {
         this.setupButton(view, "333", (e) -> this.onClickBar(e));
 
         this.setupButton(view, null, The10kGridsFrame.class);
+        this.setupButton(view, null, The9GridsFrame.class);
 
     }
 

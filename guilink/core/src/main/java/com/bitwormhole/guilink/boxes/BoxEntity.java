@@ -11,6 +11,8 @@ import com.bitwormhole.guilink.events.MouseEventEnum;
 import com.bitwormhole.guilink.events.MouseEventListener;
 import com.bitwormhole.guilink.events.TouchEvent;
 import com.bitwormhole.guilink.geometries.Point;
+import com.bitwormhole.guilink.geometries.Rect;
+import com.bitwormhole.guilink.geometries.RectUtils;
 import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.graphics.Color;
 import com.bitwormhole.guilink.graphics.Graphics;
@@ -164,19 +166,20 @@ public class BoxEntity extends Box {
     }
 
     private void innerPaintBackground(PaintContext pc) {
-        Size size = this.getSize();
+
         Style bs = GuilinkGetters.notNull(this.getStyle());
-        Graphics g = pc.graphics;
         Color color = bs.getBackgroundColor();
-        float x, y, w, h;
-        if (size != null && color != null) {
-            x = 0;
-            y = 0;
-            w = size.width;
-            h = size.height;
-            g.setColor(color);
-            g.fillRect(x, y, w, h);
+
+        if (color == null) {
+            return;
         }
+
+        Graphics g = pc.graphics;
+        Rect rect = this.getOutside().getBorder();
+        rect = RectUtils.deflate(rect, 1, 1, 1, 1);
+
+        g.setColor(color);
+        g.fillRect(rect.x, rect.y, rect.width, rect.height);
     }
 
     @Override

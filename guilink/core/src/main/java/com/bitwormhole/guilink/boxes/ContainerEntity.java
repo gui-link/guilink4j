@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.bitwormhole.guilink.events.MouseEvent;
 import com.bitwormhole.guilink.geometries.Point;
+import com.bitwormhole.guilink.geometries.Rect;
 import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.graphics.Graphics;
 import com.bitwormhole.guilink.layouts.SimpleLayout;
@@ -140,7 +141,7 @@ public class ContainerEntity extends Container {
     }
 
     private static Graphics prepareGraphicsForChild(Graphics g1, Container parent, Box child) {
-        Size size = child.getSize();
+        // Size size = child.getSize();
         Point at = child.getLocation();
         Graphics g2 = g1.create();
 
@@ -148,11 +149,15 @@ public class ContainerEntity extends Container {
         g2.translate(at.x, at.y);
 
         // clip
-        child.setClip(false); // TODO: 先暂时禁用剪切
+        // child.setClip(false); // TODO: 先暂时禁用剪切
         if (child.isClip()) {
             // do clip
             // g2 = g1.create(at.x, at.y, size.width, size.height);
-            g2.clip(at.x, at.y, size.width, size.height);
+
+            Rect rect = child.getOutside().getBorder();
+
+            g2.clip(rect.x, rect.y, rect.width, rect.height);
+            // g2.clip(at.x, at.y, size.width, size.height);
         }
 
         return g2;

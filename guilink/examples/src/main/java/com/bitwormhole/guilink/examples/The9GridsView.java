@@ -15,6 +15,7 @@ import com.bitwormhole.guilink.boxes.LineStyleEnum;
 import com.bitwormhole.guilink.boxes.PaintContext;
 import com.bitwormhole.guilink.boxes.Style;
 import com.bitwormhole.guilink.boxes.StyleWrapper;
+import com.bitwormhole.guilink.geometries.Rect;
 import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.graphics.Color;
 import com.bitwormhole.guilink.graphics.strokes.BasicStroke;
@@ -60,18 +61,22 @@ public class The9GridsView extends View {
             st = new DefaultValueStyle(st);
         }
 
-        st.setBorderColor(Color.RED);
-        st.setBorderStyle(LineStyleEnum.SOLID);
-        st.setBorderWidth(3.0f);
+        if (index == 5) {
+            st.setBackgroundColor(new Color(250, 200, 150));
+        }
 
-        st.setBorderLeftStyle(LineStyleEnum.NONE);
-        st.setBorderTopStyle(LineStyleEnum.NONE);
+        // st.setBorderColor(Color.RED);
+        // st.setBorderStyle(LineStyleEnum.SOLID);
+        // st.setBorderWidth(3.0f);
 
-        st.setBackgroundColor(Color.WHITE);
+        // st.setBorderLeftStyle(LineStyleEnum.NONE);
+        // st.setBorderTopStyle(LineStyleEnum.NONE);
 
-        st.setPaddingLeft(30f);
-        st.setPaddingTop(30f);
-        st.setPadding(10f);
+        // st.setBackgroundColor(Color.WHITE);
+
+        // st.setPaddingLeft(30f);
+        // st.setPaddingTop(30f);
+        // st.setPadding(10f);
 
         this.applyAlignToStyle(st, index, btn);
 
@@ -132,24 +137,34 @@ public class The9GridsView extends View {
 
         public MyButton(BoxContext bc, String txt) {
             super(bc, txt);
+            // this.setClip(false);
+        }
 
-            this.setClip(false);
+        private void paintX(PaintContext pc) {
+
+            pc.graphics.setColor(Color.BLUE);
+            pc.graphics.setStroke(new BasicStroke(2f));
+
+            Rect rect = this.getOutside().getPadding();
+            float x, y, w, h;
+            x = rect.x;
+            y = rect.y;
+            w = rect.width;
+            h = rect.height;
+
+            pc.graphics.drawLine(x, y, x + w, y + h);
+            pc.graphics.drawLine(x, y + h, x + w, y);
+        }
+
+        @Override
+        protected void onPaintBackground(PaintContext pc) {
+            super.onPaintBackground(pc);
+            this.paintX(pc);
         }
 
         @Override
         protected void onPaintForeground(PaintContext pc) {
-
             super.onPaintForeground(pc);
-
-            pc.graphics.setColor(Color.BLUE);
-            Size size1 = this.getSize();
-            float w = size1.width;
-            float h = size1.height;
-
-            pc.graphics.setStroke(new BasicStroke(10f));
-
-            pc.graphics.drawLine(0, 0, w, h);
-            pc.graphics.drawLine(0, h, w, 0);
         }
 
         @Override
