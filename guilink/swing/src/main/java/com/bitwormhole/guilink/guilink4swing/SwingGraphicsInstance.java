@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.graphics.Color;
+import com.bitwormhole.guilink.graphics.Context;
 import com.bitwormhole.guilink.graphics.Font;
 import com.bitwormhole.guilink.graphics.Graphics;
 import com.bitwormhole.guilink.graphics.Stroke;
@@ -213,6 +214,14 @@ public class SwingGraphicsInstance implements com.bitwormhole.guilink.graphics.G
         this.logAuto("setFont");
         java.awt.Font font2 = SwingGraphicsConvertor.convert(font);
         this.mG2d.setFont(font2);
+    }
+
+    @Override
+    public Context getContext() {
+
+        // TODO ...
+
+        return new Context();
     }
 
 }

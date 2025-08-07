@@ -5,12 +5,22 @@ import com.bitwormhole.guilink.graphics.Font;
 
 public class Style {
 
-    private Color backgroundColor;
     private Color foregroundColor;
     private Font font;
 
     private BoxSizingEnum boxSizing;
     private AlignEnum textAlign;
+
+    // background
+
+    private Color backgroundColor;
+    private Background background;
+
+    private Background.ImageHolder backgroundImage;
+    private Background.SizeEnum backgroundSize;
+    private Background.ClipEnum backgroundClip;
+    private Background.RepeatEnum backgroundRepeat;
+    private Background.PositionEnum backgroundPosition;
 
     // border
 
@@ -291,6 +301,54 @@ public class Style {
 
     public void setBorderBottomStyle(LineStyleEnum borderBottomStyle) {
         this.borderBottomStyle = borderBottomStyle;
+    }
+
+    public Background getBackground() {
+        return background;
+    }
+
+    public void setBackground(Background background) {
+        this.background = background;
+    }
+
+    public Background.ImageHolder getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(Background.ImageHolder backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
+
+    public Background.SizeEnum getBackgroundSize() {
+        return backgroundSize;
+    }
+
+    public void setBackgroundSize(Background.SizeEnum backgroundSize) {
+        this.backgroundSize = backgroundSize;
+    }
+
+    public Background.ClipEnum getBackgroundClip() {
+        return backgroundClip;
+    }
+
+    public void setBackgroundClip(Background.ClipEnum backgroundClip) {
+        this.backgroundClip = backgroundClip;
+    }
+
+    public Background.RepeatEnum getBackgroundRepeat() {
+        return backgroundRepeat;
+    }
+
+    public void setBackgroundRepeat(Background.RepeatEnum backgroundRepeat) {
+        this.backgroundRepeat = backgroundRepeat;
+    }
+
+    public Background.PositionEnum getBackgroundPosition() {
+        return backgroundPosition;
+    }
+
+    public void setBackgroundPosition(Background.PositionEnum backgroundPosition) {
+        this.backgroundPosition = backgroundPosition;
     }
 
 }

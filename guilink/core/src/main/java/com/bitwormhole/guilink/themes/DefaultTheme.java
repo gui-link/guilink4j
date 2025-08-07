@@ -1,6 +1,7 @@
 package com.bitwormhole.guilink.themes;
 
 import com.bitwormhole.guilink.boxes.Box;
+import com.bitwormhole.guilink.boxes.BoxSizingEnum;
 import com.bitwormhole.guilink.boxes.BoxStateEnum;
 import com.bitwormhole.guilink.boxes.Container;
 import com.bitwormhole.guilink.boxes.LineStyleEnum;
@@ -107,6 +108,7 @@ public class DefaultTheme extends BaseTheme {
         normal.setTargetType(tt);
         normal.setState(BoxStateEnum.NORMAL);
         normal.setPipeline((style) -> {
+            style.setBoxSizing(BoxSizingEnum.BORDER_BOX);
             style.setMargin(2.0f);
             style.setBorderWidth(1.0f);
             style.setBorderColor(Color.GRAY);

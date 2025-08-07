@@ -4,6 +4,8 @@ import com.bitwormhole.guilink.geometries.Size;
 
 public interface Graphics {
 
+    Context getContext();
+
     Graphics create();
 
     Graphics create(float x, float y, float width, float height);

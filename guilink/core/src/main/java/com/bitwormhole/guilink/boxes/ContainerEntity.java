@@ -6,7 +6,6 @@ import java.util.List;
 import com.bitwormhole.guilink.events.MouseEvent;
 import com.bitwormhole.guilink.geometries.Point;
 import com.bitwormhole.guilink.geometries.Rect;
-import com.bitwormhole.guilink.geometries.Size;
 import com.bitwormhole.guilink.graphics.Graphics;
 import com.bitwormhole.guilink.layouts.SimpleLayout;
 
